@@ -4650,7 +4650,7 @@ GameObject:
   - component: {fileID: 2104339655}
   - component: {fileID: 2104339654}
   m_Layer: 0
-  m_Name: MatrixManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4669,10 +4669,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialMatrix: 2
-  x: 2
-  y: 2
+  x: 5
+  y: 8
   minValue: 0
-  maxValue: 3
+  maxValue: 7
   matrixText: {fileID: 769745199}
   rangeText: {fileID: 1922914872}
   sizeText: {fileID: 962588957}

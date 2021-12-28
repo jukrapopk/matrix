@@ -91,17 +91,58 @@ namespace Classes
         //return the number of elements from this area.
         public Result FindCountElementOfBiggestArea()
         {
-            return new Result(4, 9, new[,]
+            int maxNumber = GetValue(0, 0);
+            bool[,] maxPositions = new bool[Y, X];
+            int maxCount = 0;
+
+            int[,] tempTab = (int[,]) Tab.Clone();
+            for (int j = 0; j < Y; ++j)
             {
-                {false, false, false, false, false},
-                {false, false, false, false, false},
-                {false, false, false, false, false},
-                {false, false, false, true, true},
-                {false, false, false, true, true},
-                {false, false, false, false, true},
-                {false, false, false, true, true},
-                {false, false, false, true, true},
-            });
+                for (int i = 0; i < X; ++i)
+                {
+                    if (GetValue(i, j) != -1)
+                    {
+                        int number = GetValue(i, j);
+                        bool[,] positions = new bool[Y, X];
+                        int count = GetRegionSize(i, j, number, tempTab, positions);
+                        if (count >= maxCount)
+                        {
+                            maxNumber = number;
+                            maxPositions = positions;
+                            maxCount = count;
+                        }
+                    }
+                }
+            }
+
+            return new Result(maxNumber, maxCount, maxPositions);
+        }
+
+        private int GetRegionSize(int x, int y, int number, int[,] matrix, bool[,] positions)
+        {
+            int count = 1;
+            if (x < 0 || y < 0 || x >= X || y > Y || number == -1)
+            {
+                return 0;
+            }
+
+            matrix[y, x] = -1;
+            positions[y, x] = true;
+            for (int c = x - 1; c <= x + 1; c++)
+            {
+                if (c < 0 || c >= X || c == x || matrix[y, c] != number) continue;
+                count += GetRegionSize(c, y, number, matrix, positions);
+                positions[y, c] = true;
+            }
+
+            for (int r = y - 1; r <= y + 1; r++)
+            {
+                if (r < 0 || r >= Y || r == y || matrix[r, x] != number) continue;
+                count += GetRegionSize(x, r, number, matrix, positions);
+                positions[r, x] = true;
+            }
+
+            return count;
         }
 
         public void Randomize(int minValue, int maxValue)
